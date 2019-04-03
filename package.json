@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "d3": "^5.9.2",
     "d3-selection-multi": "^1.0.1",
     "express": "^4.16.4"
   },
