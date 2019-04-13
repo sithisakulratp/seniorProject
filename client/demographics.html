@@ -1,0 +1,34 @@
+<!DOCTYPE>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demographics</title>
+  <link rel="stylesheet" href="/demographics.css">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-selection.v1.js"></script>
+  <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+</head>
+
+<body>
+  <h1>Demographics at Xavier</h1>
+
+  <!--DOM elements-->
+  <script type="text/javascript">
+  var w = 800;
+  var h = 450;
+  var dataset;
+
+  d3.csv("demographics_q.csv", function(error, data) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(data);
+    }
+    dataset = data;
+
+    demographics(); // generate visualization for demographics
+  });
+
+  </script>
+</body>
+</html>
