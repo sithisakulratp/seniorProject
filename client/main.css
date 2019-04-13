@@ -1,12 +1,23 @@
-body,html {
+body, * {
+  box-sizing: border-box;
   margin: 0;
-  padding: 0;
-  font-family: "Arial", sans-serif;
-  font-size: 0.95em;
-  text-align: center;
+  background-color: linear-gradient(#0C2340, #0099CC);
 }
 
-#chart {
-  background-color: #F5F2EB;
-  border: 1px solid #CCC;
+.gridcontainer {
+  float: left;
+  width: 50%;
+  height: 50%;
+  padding: 0;
+}
+
+.demographics {
+  background-color: #bdc3c7;
+  font-color: 
+  grid-column: auto;
+  grid-row: auto;
+  /* background-image:
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center; */
 }
