@@ -2,11 +2,16 @@
   "version": 2,
   "routes": [
     { "src": "/", "dest": "client/index.html" },
+    { "src": "/demographics", "dest": "client/demographics.html"},
+    { "src": "/intersectionality", "dest": "client/intersectionality.html"},
+    { "src": "/comparison", "dest": "client/comparison.html"},
+    { "src": "/about", "dest": "client/about.html"},
     { "src": "/api", "dest": "server/index.js" }],
   "builds": [
     { "src": "client/*.js", "use": "@now/static" },
     { "src": "client/*.html", "use": "@now/static" },
     { "src": "client/*.css", "use": "@now/static" },
-    { "src": "server/index.js", "use": "@now/node-server" }
+    { "src": "client/*.csv", "use": "@now/static" },
+    { "src": "server/*.js", "use": "@now/node-server" }
   ]
 }
