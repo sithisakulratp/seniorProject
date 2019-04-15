@@ -1,0 +1,37 @@
+<!DOCTYPE>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Before & After</title>
+  <link rel="stylesheet" href="/comparison.css">
+  <script src="https://d3js.org/d3.v5.js"></script>
+  <script src="https://d3js.org/d3-selection.v1.js"></script>
+  <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+  <script src="wordCloud.js"></script>
+</head>
+
+<body>
+  <h1>Before & After Comparison</h1>
+
+  <p>The two word clouds show the results of before and after the participants
+    have watched the video on Intersectionality and show how their perception
+    of the terminology "Intersectionality" has changed</p>
+
+  <script type="text/javascript">
+
+  var margin = {top: 20, right: 20, bottom: 40, left: 20},
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+  // parsing data from CSV file
+  d3.csv("data_q.csv", function(d) {
+    return {
+      before : d.Q25.toLowerCase(),
+      after : d.Q33.toLowerCase()
+    };
+  }).then(function(data) {
+    console.log(data);
+  });
+  </script>
+</body>
+</html>
