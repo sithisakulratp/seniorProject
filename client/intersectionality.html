@@ -1,0 +1,37 @@
+<!DOCTYPE>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Intersectionality</title>
+  <link rel="stylesheet" href="/intersectionality.css">
+  <script src="https://d3js.org/d3.v5.js"></script>
+  <script src="https://d3js.org/d3-selection.v1.js"></script>
+  <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+</head>
+
+<body>
+  <h1>Intersectionality at Xavier</h1>
+
+  <script type="text/javascript">
+
+  // parsing data from CSV file
+  d3.csv("data_q.csv", function(d) {
+    return {
+      age : d.Q8.toLowerCase(),
+      sex : d.Q9.toLowerCase(),
+      gender_identity : d.Q10.toLowerCase(),
+      sexual_orientation : d.Q11.toLowerCase(),
+      immigration_status : d.Q12.toLowerCase(),
+      race : d.Q13.toLowerCase(),
+      highest_education : d.Q14.toLowerCase(),
+      marital_status : d.Q15.toLowerCase(),
+      veteran : d.Q16.toLowerCase(),
+      religion : d.Q17.toLowerCase(),
+      disability : d.Q18.toLowerCase()
+    };
+  }).then(function(data) {
+    console.log(data);
+  });
+  </script>
+</body>
+</html>
