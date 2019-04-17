@@ -1,0 +1,48 @@
+<!DOCTYPE>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+  <title>Media Discimination</title>
+  <link rel="stylesheet" href="/comparison.css">
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://d3js.org/d3-selection.v1.js"></script>
+</head>
+
+<body>
+  <h1>The Discrimination on Media</h1>
+
+  <script type="text/javascript">
+  // parsing data from CSV file
+
+  d3.csv("data_q.csv").then(function(data) {
+    var maleVictim = d3.nest()
+        .key(function(d) { return d.Q19.toUpperCase(); })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            maleVictim: group.key,
+            count: group.value
+          }
+        });
+    console.log(maleVictim);
+
+    var femaleVictim = d3.nest()
+        .key(function(d) { return d.Q20.toUpperCase(); })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            femaleVictim: group.key,
+            count: group.value
+          }
+        });
+    console.log(femaleVictim);
+
+  });
+
+  </script>
+</body>
+</html>
