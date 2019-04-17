@@ -23,14 +23,20 @@ router.get('/comparison', (req, res) => {
   res.sendFile(path.join(__dirname+'/comparison.html'))
 });
 
+router.get('/mediaDiscrimination', (req, res) => {
+  res.sendFile(path.join(__dirname+'/mediaDiscrimination.html'))
+});
+
 router.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname+'/about.html'))
 });
 
+// run wordCloud.js as static file
+app.use('/static', express.static(__dirname + '/wordCloud.js' ))
 // store all html files in view folder
 app.use(express.static(__dirname + '/View'));
 // store all js and css files in scripts folder
-app.use(express.static(__dirname + 'Script'));
+app.use(express.static(__dirname + '/Script'));
 
 app.use('/', router);
 app.listen()

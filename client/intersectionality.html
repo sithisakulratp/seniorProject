@@ -4,34 +4,157 @@
   <meta charset="UTF-8">
   <title>Intersectionality</title>
   <link rel="stylesheet" href="/intersectionality.css">
-  <script src="https://d3js.org/d3.v5.js"></script>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://d3js.org/d3-selection.v1.js"></script>
   <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+  <script src="https://unpkg.com/d3-array@1"></script>
+  <script src="https://unpkg.com/d3-collection@1"></script>
+  <script src="https://unpkg.com/d3-path@1"></script>
+  <script src="https://unpkg.com/d3-shape@1"></script>
+  <script src="https://unpkg.com/d3-sankey@0"></script>
 </head>
 
 <body>
   <h1>Intersectionality at Xavier</h1>
 
   <script type="text/javascript">
-
+  var sankey = d3.sankey();
   // parsing data from CSV file
-  d3.csv("data_q.csv", function(d) {
-    return {
-      age : d.Q8.toLowerCase(),
-      sex : d.Q9.toLowerCase(),
-      gender_identity : d.Q10.toLowerCase(),
-      sexual_orientation : d.Q11.toLowerCase(),
-      immigration_status : d.Q12.toLowerCase(),
-      race : d.Q13.toLowerCase(),
-      highest_education : d.Q14.toLowerCase(),
-      marital_status : d.Q15.toLowerCase(),
-      veteran : d.Q16.toLowerCase(),
-      religion : d.Q17.toLowerCase(),
-      disability : d.Q18.toLowerCase()
-    };
-  }).then(function(data) {
-    console.log(data);
-  });
+  d3.csv("data_q.csv").then(function(data) {
+    // regrouping for age
+    var ageCnt = d3.nest()
+        .key(function(d) { return d.Q8; })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            age: group.key,
+            count: group.value
+          }
+        });
+    console.log(ageCnt);
+
+    // regrouping sex assigned at birth
+    var sexCnt = d3.nest()
+        .key(function(d) { return d.Q9; })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            sex: group.key,
+            count: group.value
+          }
+        });
+    console.log(sexCnt);
+
+    // regrouping gender identity
+    var genderIdentity = d3.nest()
+        .key(function(d) { return d.Q10; })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            gender_identity: group.key,
+            count: group.value
+          }
+        });
+    console.log(genderIdentity);
+
+    // regrouping sexual_orientation
+    var sexual_orientation = d3.nest()
+        .key(function(d) { return d.Q11; })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            sexual_orientation: group.key,
+            count: group.value
+          }
+        });
+    console.log(sexual_orientation);
+
+    // regrouping immigration_status
+    var immigration_status = d3.nest()
+        .key(function(d) { return d.Q12; })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            immigration_status: group.key,
+            count: group.value
+          }
+        });
+    console.log(immigration_status);
+
+    // regrouping ethnicity
+    var ethnicity = d3.nest()
+        .key(function(d) { return d.Q13; })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            ethnicity: group.key,
+            count: group.value
+          }
+        });
+    console.log(ethnicity);
+
+    // regrouping highest_education
+    var highest_education = d3.nest()
+        .key(function(d) { return d.Q14; })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            highest_education: group.key,
+            count: group.value
+          }
+        });
+    console.log(highest_education);
+
+    // regrouping marital_status
+    var marital_status = d3.nest()
+        .key(function(d) { return d.Q15; })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            marital_status: group.key,
+            count: group.value
+          }
+        });
+    console.log(marital_status);
+
+    // regrouping religion_faith
+    var religion_faith = d3.nest()
+        .key(function(d) { return d.Q17; })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            religion_faith: group.key,
+            count: group.value
+          }
+        });
+    console.log(religion_faith);
+
+    // regrouping disability
+    var disability = d3.nest()
+        .key(function(d) { return d.Q18; })
+        .rollup(function(v) { return v.length; })
+        .entries(data)
+        .map(function(group) {
+          return {
+            disability: group.key,
+            count: group.value
+          }
+        });
+    console.log(disability);
+
+    
+});
   </script>
 </body>
 </html>
