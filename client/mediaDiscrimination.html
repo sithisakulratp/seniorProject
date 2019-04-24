@@ -1,47 +1,123 @@
 <!DOCTYPE>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
   <title>Media Discimination</title>
-  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="/mediaDisc.css">
+  <!-- <script src="/d3.min.js"></script> -->
+
+  <style>
+    .arc text {
+        font: 10px sans-serif;
+        text-anchor: middle;
+    }
+
+    .arc path {
+        stroke: #fff;
+    }
+
+    .title {
+        fill: teal;
+        font-weight: bold;
+    }
+  </style>
+
+  <script type="text/javascript" src="d3.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/d3.v4.min.js"></script>
+  <script src="http://d3js.org/d3.v5.min.js"></script>
   <script src="https://d3js.org/d3-selection.v1.js"></script>
+  <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.csv.js"></script>
+  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js"></script>
+
 </head>
 
 
 <body>
   <h1>The Discrimination on Media</h1>
 
+  <svg width="800" height="400"></svg>
   <script type="text/javascript">
-  // parsing data from CSV file
 
-  d3.csv("data_q.csv").then(function(data) {
-    var maleVictim = d3.nest()
-        .key(function(d) { return d.Q19.toUpperCase(); })
-        .rollup(function(v) { return v.length; })
-        .entries(data)
-        .map(function(group) {
-          return {
-            maleVictim: group.key,
-            count: group.value
-          }
+    //global var for data
+    var maleVictim, femaleVictim;
+    var dataset;
+
+    var svg = d3.select("svg"),
+        width = svg.attr("width"),
+        height = svg.attr("height"),
+        radius = Math.min(width, height) / 2;
+
+    var g = svg.append("g")
+               .attr("transform", "translate(" + (width/2 - 150) + "," + height/2 + ")");
+
+    var color = d3.scaleOrdinal(['#4daf4a','#377eb8','#ff7f00','#984ea3','#e41a1c']);
+
+    var pie = d3.pie().value(function(d) {
+            return d.count;
         });
-    console.log(maleVictim);
 
-    var femaleVictim = d3.nest()
-        .key(function(d) { return d.Q20.toUpperCase(); })
-        .rollup(function(v) { return v.length; })
-        .entries(data)
-        .map(function(group) {
-          return {
-            femaleVictim: group.key,
-            count: group.value
-          }
-        });
-    console.log(femaleVictim);
+    var path = d3.arc()
+                 .outerRadius(radius - 10)
+                 .innerRadius(0);
 
-  });
+    var label = d3.arc()
+                  .outerRadius(radius)
+                  .innerRadius(radius - 80);
+
+    d3.csv("data_q.csv").then(function(data) {
+      dataset = data;
+      console.log(dataset);
+
+      maleVictim = d3.nest()
+      .key(function(d) { return d.Q19; })
+      .rollup(function(v) { return v.length; })
+      .entries(dataset)
+      .map(function(d) {
+        return {
+          male: d.key,
+          count: +d.value
+        };
+      });
+
+      femaleVictim = d3.nest()
+      .key(function(d) { return d.Q20; })
+      .rollup(function(v) { return v.length; })
+      .entries(dataset)
+      .map(function(d) {
+        return {
+          female: d.key,
+          count: +d.value
+        };
+      });
+      console.log(maleVictim);
+      console.log(femaleVictim);
+
+      var arc = g.selectAll(".arc")
+                 .data(pie(maleVictim))
+                 .enter().append("g")
+                 .attr("class", "arc");
+
+      arc.append("path")
+         .attr("d", path)
+         .attr("fill", function(d) { return color(d.data.male); });
+
+      console.log(arc);
+
+      arc.append("text")
+         .attr("transform", function(d) {
+                  return "translate(" + label.centroid(d) + ")";
+          })
+         .text(function(d) { return d.data.male; });
+
+      });
+
+      svg.append("g")
+         .attr("transform", "translate(" + (width/2 -350) + "," + 20 + ")")
+         .append("text")
+         .text("male victims")
+         .attr("class", "title")
 
   </script>
 </body>
