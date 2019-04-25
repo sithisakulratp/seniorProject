@@ -2,22 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Media Discimination</title>
+  <title>Media Discrimination</title>
   <link rel="stylesheet" href="/mediaDisc.css">
   <!-- <script src="/d3.min.js"></script> -->
 
   <style>
+    body {
+        width: 960px;
+    }
     .arc text {
-        font: 10px sans-serif;
+        font-size: 15px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         text-anchor: middle;
     }
 
     .arc path {
         stroke: #fff;
+        stroke-width: 2px;
     }
 
     .title {
-        fill: teal;
+        fill: navy;
+        font-size: 20px;
         font-weight: bold;
     }
   </style>
@@ -28,29 +34,33 @@
   <script src="http://d3js.org/d3.v5.min.js"></script>
   <script src="https://d3js.org/d3-selection.v1.js"></script>
   <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
-  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.csv.js"></script>
-  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js"></script>
+  <!-- <script type="text/javascript" src="http://mbostock.github.com/d3/d3.csv.js"></script>
+  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.layout.js"></script> -->
 
 </head>
 
-
 <body>
-  <h1>The Discrimination on Media</h1>
+  <h1 align="center">The Discrimination on Media</h1>
 
-  <svg width="800" height="400"></svg>
+  <svg width="450" height="400" id="svg1"></svg>
+  <svg width="450" height="400" id="svg2"></svg>
   <script type="text/javascript">
 
     //global var for data
     var maleVictim, femaleVictim;
     var dataset;
 
-    var svg = d3.select("svg"),
-        width = svg.attr("width"),
-        height = svg.attr("height"),
-        radius = Math.min(width, height) / 2;
+    var svg1 = d3.select("#svg1"),
+        svg2 = d3.select("#svg2"),
+        width = svg1.attr("width"),
+        height = svg1.attr("height"),
+        radius = Math.min(width, height)/3;
 
-    var g = svg.append("g")
-               .attr("transform", "translate(" + (width/2 - 150) + "," + height/2 + ")");
+    var g1 = svg1.append("g")
+               .attr("transform", "translate(" + (width/2 - 50) + "," + height/2 + ")");
+
+    var g2 = svg2.append("g")
+              .attr("transform", "translate(" + (width/2 -50) + "," + height/2 + ")");
 
     var color = d3.scaleOrdinal(['#4daf4a','#377eb8','#ff7f00','#984ea3','#e41a1c']);
 
@@ -62,9 +72,33 @@
                  .outerRadius(radius - 10)
                  .innerRadius(0);
 
+    var arcOver = d3.arc()
+                    .outerRadius(radius)
+                    .innerRadius(20);
+
     var label = d3.arc()
                   .outerRadius(radius)
-                  .innerRadius(radius - 80);
+                  .innerRadius(radius - 200);
+
+    var eventObj = {
+        'mouseover': function(d, i) {
+          d3.select(this)
+          .attr("stroke", "white")
+          .transition()
+          .duration(200)
+          .attr("d", arcOver)
+          .attr("stroke-width", 1);
+        },
+
+        'mouseout': function(d, i) {
+          d3.select(this)
+          .attr("stroke", "none")
+          .transition()
+          .duration(200)
+          .ease('bounce')
+          .attr("d", path);
+        }
+    };
 
     d3.csv("data_q.csv").then(function(data) {
       dataset = data;
@@ -94,30 +128,70 @@
       console.log(maleVictim);
       console.log(femaleVictim);
 
-      var arc = g.selectAll(".arc")
-                 .data(pie(maleVictim))
+      // draw pie for male victims
+      var arc1 = g1.selectAll(".arc")
+                  .data(pie(maleVictim))
                  .enter().append("g")
-                 .attr("class", "arc");
+                  .attr("class", "arc");
 
-      arc.append("path")
-         .attr("d", path)
-         .attr("fill", function(d) { return color(d.data.male); });
+       arc1.append("path")
+          .attr("d", path)
+          .attr("fill", function(d) { return color(d.data.male); })
+          .on(eventObj);
 
-      console.log(arc);
+      console.log(arc1);
 
-      arc.append("text")
+      arc1.append("text")
          .attr("transform", function(d) {
                   return "translate(" + label.centroid(d) + ")";
           })
          .text(function(d) { return d.data.male; });
 
-      });
+       // draw pie for female victims
+      var arc2 = g2.selectAll(".arc")
+                .data(pie(femaleVictim))
+              .enter().append("g")
+                .attr("class", "arc");
 
-      svg.append("g")
-         .attr("transform", "translate(" + (width/2 -350) + "," + 20 + ")")
+      arc2.append("path")
+           .attr("d", path)
+           .attr("fill", function(d) { return color(d.data.female); })
+           .on(eventObj);
+
+      console.log(arc2);
+
+      arc2.append("text")
+          .attr("transform", function(d) {
+             return "translate(" + label.centroid(d) + ")";
+          })
+          .text(function(d) { return d.data.female; });
+        });
+
+      svg1.append("g")
+         .attr("transform", "translate(" + (width/3 - 20) + "," + 40 + ")")
          .append("text")
          .text("male victims")
-         .attr("class", "title")
+         .attr("class", "title");
+
+      svg2.append("g")
+        .attr("transform", "translate(" + (width/3 - 20) + "," + 40 + ")")
+        .append("text")
+        .text("female victims")
+        .attr("class", "title");
+
+      // chart.append("svg")
+      //     .attr("class", "legend")
+      //     .attr("width", "100%")
+      //     .attr("height", 50)
+      //     .attr("transform", "translate(0, -100)");
+      //
+      // chart.selectAll('pie')
+      //     .data(dataset)
+      //   .enter().append("svg")
+      //     .attr("width", width / 2)
+      //     .attr("height", height / 2)
+      //   .append("g")
+      //     .attr("transform", "translate(" + chart + "," + chart/2 + ")");
 
   </script>
 </body>
