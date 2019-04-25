@@ -31,12 +31,17 @@ router.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname+'/about.html'))
 });
 
+// router.get('/piechart', (req, res) => {
+//   res.sendFile(path.join(__dirname+'/piechart.html'))
+// });
+
 // run wordCloud.js as static file
-app.use('/static', express.static(__dirname + '/wordCloud.js' ))
+router.use('/static', express.static(path.join(__dirname + '/wordCloud.js')))
 // store all html files in view folder
-app.use(express.static(__dirname + '/View'));
+router.use(express.static(__dirname + '/View'));
 // store all js and css files in scripts folder
-app.use(express.static(__dirname + '/Script'));
+router.use(express.static(__dirname + '/Script'));
 
 app.use('/', router);
 app.listen()
+module.exports = app;

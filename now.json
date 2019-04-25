@@ -2,12 +2,13 @@
   "version": 2,
   "routes": [
     { "src": "/", "dest": "client/index.html" },
+    { "src": "/home", "dest": "client/index.html" },
     { "src": "/demographics", "dest": "client/demographics.html"},
     { "src": "/intersectionality", "dest": "client/intersectionality.html"},
     { "src": "/comparison", "dest": "client/comparison.html"},
     { "src": "/about", "dest": "client/about.html"},
-    { "src": "/mediaDiscrimination", "dest": "client/mediaDiscrimination"},
-    { "src": "/api", "dest": "server/index.js" }]
+    { "src": "/mediaDiscrimination", "dest": "client/mediaDiscrimination.html"},
+    { "src": "/api", "dest": "server/index.js" }],
   "builds": [
     { "src": "client/*.js", "use": "@now/static" },
     { "src": "client/*.html", "use": "@now/static" },

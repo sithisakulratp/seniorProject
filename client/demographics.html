@@ -1,12 +1,13 @@
 <!DOCTYPE>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Demographics</title>
   <link rel="stylesheet" href="/demographics.css">
-  <script src="https://d3js.org/d3.v3.min.js"></script>
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <!-- <script src="/d3.min.js"></script> -->
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/d3.v4.min.js"></script>
+  <script src="http://d3js.org/d3.v5.min.js"></script>
   <script src="https://d3js.org/d3-selection.v1.js"></script>
   <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
 </head>
@@ -23,6 +24,7 @@
       var ageCnt = d3.nest()
           .key(function(d) { return d.Q8; })
           .rollup(function(v) { return v.length; })
+          .sortKeys(d3.ascending)
           .entries(data)
           .map(function(group) {
             return {
@@ -101,6 +103,7 @@
       var highest_education = d3.nest()
           .key(function(d) { return d.Q14; })
           .rollup(function(v) { return v.length; })
+          .sortKeys(d3.ascending)
           .entries(data)
           .map(function(group) {
             return {
