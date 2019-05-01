@@ -1,0 +1,28 @@
+.arc text {
+  font: 16px sans-serif;
+  text-anchor: middle;
+  font-weight: bold;
+}
+
+.arc path {
+  stroke: #fff;
+}
+
+.title {
+  fill: teal;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.text {
+  color: Navy;
+  font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.chart1 {
+  float: left;
+}
+
+.chart2 {
+  float: right;
+}

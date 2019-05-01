@@ -1,23 +1,27 @@
 body, * {
   box-sizing: border-box;
   margin: 0;
-  background-color: linear-gradient(#0C2340, #0099CC);
+  background-color: white;
 }
 
-.gridcontainer {
+/* .gridcontainer {
   float: left;
   width: 50%;
   height: 50%;
   padding: 0;
-}
+} */
 
 .demographics {
   background-color: #bdc3c7;
-  font-color: 
   grid-column: auto;
   grid-row: auto;
   /* background-image:
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center; */
+}
+
+.text {
+  color: Navy;
+  font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif; 
 }

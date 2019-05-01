@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.text {
+  color: Navy;
+  font-family:  "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.bar {
+  fill: blue;
+}

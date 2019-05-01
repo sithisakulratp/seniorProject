@@ -1,35 +1,166 @@
 <!DOCTYPE>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <title>Demographics</title>
-  <link rel="stylesheet" href="/demographics.css">
-  <!-- <script src="/d3.min.js"></script> -->
-  <script src="http://d3js.org/d3.v3.min.js"></script>
-  <script src="http://d3js.org/d3.v4.min.js"></script>
-  <script src="http://d3js.org/d3.v5.min.js"></script>
-  <script src="https://d3js.org/d3-selection.v1.js"></script>
-  <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+  <link rel="stylesheet" href="../public/css/demographics.css">
+
+  <script src="http://d3js.org/d3.v4.js"></script>
 </head>
 
 <body>
-  <h1>Demographics at Xavier</h1>
+  <h1 class="text" align="center">Demographics at Xavier</h1>
 
   <!--DOM elements-->
+  <svg width="400" height="400" id="age-chart"></svg>
+  <svg width="400" height="400" id="sex-chart"></svg>
+  <svg width="400" height="400" id="gender-chart"></svg>
+  <svg width="400" height="400" id="sexualOrientation-chart"></svg>
+  <svg width="400" height="400" id="immigration-chart"></svg>
+  <svg width="400" height="400" id="ethnicity"></svg>
+  <svg width="400" height="400" id="highestEd-chart"></svg>
+  <svg width="400" height="400" id="marital-chart"></svg>
+  <svg width="400" height="400" id="religion-chart"></svg>
+  <svg width="400" height="400" id="disability-chart"></svg>
+
   <script type="text/javascript">
 
+    // var age = [
+    //   { age: "17 or younger", count: 1 },
+    //   { age: "18-20", count: 50 },
+    //   { age: "21-29", count: 48 },
+    //   { age: "30-39", count: 17 },
+    //   { age: "40-49", count: 18 },
+    //   { age: "50-59", count: 14 },
+    //   { age: "60 or older", count: 11 }
+    // ];
+    //
+    // var sex = [
+    //   { sex: "Male", count: 38 },
+    //   { sex: "Female", count: 120 },
+    //   { sex: "Intersex", count: 1 }
+    // ];
+    //
+    // var gender_identity = [
+    //   { gender_identity: "Man", count: 37 },
+    //   { gender_identity: "Woman", count: 119 },
+    //   { gender_identity: "Non-binary", count: 1 },
+    //   { gender_identity: "Other", count: 2 }
+    // ];
+    //
+    // var sexual_orientation = [
+    //   { sexual_orientation: "Heterosexual", count: 123 },
+    //   { sexual_orientation: "Homosexual", count: 9 },
+    //   { sexual_orientation: "Bisexual", count: 17 },
+    //   { sexual_orientation: "Lesbian", count: 1 },
+    //   { sexual_orientation: "Prefer not to answer", count: 3 },
+    //   { sexual_orientation: "Other", count: 6}
+    // ];
+    //
+    // var immigration_status = [
+    //   { immigration_status: "Non-immigrant", count: 142 },
+    //   { immigration_status: "Immigrant", count: 10 },
+    //   { immigration_status: "Prefer not to answer", count: 6 },
+    //   { immigration_status: "Other", count: 1}
+    // ];
+    //
+    // var ethnicity = [
+    //   { ethnicity: "White or Caucasian", count: 123 },
+    //   { ethnicity: "Black or African American", count: 11 },
+    //   { ethnicity: "From multiple races", count: 10},
+    //   { ethnicity: "Asian or Asian American", count: 10},
+    //   { ethnicity: "Indian", count: 1 },
+    //   { ethnicity: "Hispanic or Latino", count: 1 },
+    //   { ethnicity: "Prefer not to answer", count: 1 },
+    //   { ethnicity: "Other", count: 2 }
+    // ];
+    //
+    // var highest_education = [
+    //   { highest_education: "Associate degree", count: 6 },
+    //   { highest_education: "Bachelor's degree", count: 25},
+    //   { highest_education: "Doctoral degree", count: 18 },
+    //   { highest_education: "High school graduate", count: 54 },
+    //   { highest_education: "Less than a high school diploma", count: 1 },
+    //   { highest_education: "Master's degree", count: 27 },
+    //   { highest_education: "Professional degree", count: 2 },
+    //   { highest_education: "Some college", count: 26}
+    // ];
+    //
+    // var marital_status = [
+    //   { marital_status: "Married", count: 44 },
+    //   { marital_status: "Single", count: 95 },
+    //   { marital_status: "Divorced", count: 6 },
+    //   { marital_status: "In a domestic partnership", count: 6 },
+    //   { marital_status: "Widowed", count: 2 },
+    //   { marital_status: "Prefer not to answer", count: 3 },
+    //   { marital_status: "Other", count: 3 }
+    // ];
+    //
+    // var religion_faith = [
+    //   { religion_faith: "Christian", count: 115 },
+    //   { religion_faith: "Unitarian Universalist", count: 1 },
+    //   { religion_faith: "Jainism", count: 1 },
+    //   { religion_faith: "Atheist", count: 10 },
+    //   { religion_faith: "Muslim", count: 3 },
+    //   { religion_faith: "Agnostic", count: 1 },
+    //   { religion_faith: "Buddhist", count: 3 },
+    //   { religion_faith: "Jewish", count: 4 },
+    //   { religion_faith: "None", count: 2 },
+    //   { religion_faith: "Hindu", count: 3 },
+    //   { religion_faith: "Taoist", count: 1 },
+    //   { religion_faith: "Prefer not to answer", count: 8 },
+    //   { religion_faith: "Other (specify)", count: 7 }
+    // ];
+    //
+    // var disability = [
+    //   { disability: "No", count: 132 },
+    //   { disability: "Yes", count: 24 },
+    //   { disability: "Prefer not to answer", count: 3 }
+    // ];
+    //
+    // console.log(age);
+    // console.log(sex);
+    // console.log(gender_identity);
+    // console.log(sexual_orientation);
+    // console.log(immigration_status);
+    // console.log(ethnicity);
+    // console.log(highest_education);
+    // console.log(marital_status);
+    // console.log(religion_faith);
+    // console.log(disability);
+
+
+    var margin = { top: 35, right: 0, bottom: 30, left: 40 },
+        width = 760 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    var age_svg = d3.select("#age-chart")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var x = d3.scaleBand()
+            .range([0, width])
+            .padding(0.1);
+
+    var y = d3.scaleLinear()
+            .range([height, 0]);
+
     // parsing data from CSV file
-    d3.csv("data_q.csv").then(function(data) {
+    d3.csv("data_q.csv", function(error, data) {
+      if (error) throw error;
+
       // regrouping for age
       var ageCnt = d3.nest()
           .key(function(d) { return d.Q8; })
           .rollup(function(v) { return v.length; })
           .sortKeys(d3.ascending)
           .entries(data)
-          .map(function(group) {
+          .map(function(d) {
             return {
-              age: group.key,
-              count: group.value
+              age: d.key,
+              count: +d.value
             }
           });
       console.log(ageCnt);
@@ -39,10 +170,10 @@
           .key(function(d) { return d.Q9; })
           .rollup(function(v) { return v.length; })
           .entries(data)
-          .map(function(group) {
+          .map(function(d) {
             return {
-              sex: group.key,
-              count: group.value
+              sex: d.key,
+              count: +d.value
             }
           });
       console.log(sexCnt);
@@ -52,10 +183,10 @@
           .key(function(d) { return d.Q10; })
           .rollup(function(v) { return v.length; })
           .entries(data)
-          .map(function(group) {
+          .map(function(d) {
             return {
-              gender_identity: group.key,
-              count: group.value
+              gender_identity: d.key,
+              count: +d.value
             }
           });
       console.log(genderIdentity);
@@ -65,10 +196,10 @@
           .key(function(d) { return d.Q11; })
           .rollup(function(v) { return v.length; })
           .entries(data)
-          .map(function(group) {
+          .map(function(d) {
             return {
-              sexual_orientation: group.key,
-              count: group.value
+              sexual_orientation: d.key,
+              count: +d.value
             }
           });
       console.log(sexual_orientation);
@@ -78,10 +209,10 @@
           .key(function(d) { return d.Q12; })
           .rollup(function(v) { return v.length; })
           .entries(data)
-          .map(function(group) {
+          .map(function(d) {
             return {
-              immigration_status: group.key,
-              count: group.value
+              immigration_status: d.key,
+              count: +d.value
             }
           });
       console.log(immigration_status);
@@ -91,10 +222,10 @@
           .key(function(d) { return d.Q13; })
           .rollup(function(v) { return v.length; })
           .entries(data)
-          .map(function(group) {
+          .map(function(d) {
             return {
-              ethnicity: group.key,
-              count: group.value
+              ethnicity: d.key,
+              count: +d.value
             }
           });
       console.log(ethnicity);
@@ -105,10 +236,10 @@
           .rollup(function(v) { return v.length; })
           .sortKeys(d3.ascending)
           .entries(data)
-          .map(function(group) {
+          .map(function(d) {
             return {
-              highest_education: group.key,
-              count: group.value
+              highest_education: d.key,
+              count: +d.value
             }
           });
       console.log(highest_education);
@@ -118,10 +249,10 @@
           .key(function(d) { return d.Q15; })
           .rollup(function(v) { return v.length; })
           .entries(data)
-          .map(function(group) {
+          .map(function(d) {
             return {
-              marital_status: group.key,
-              count: group.value
+              marital_status: d.key,
+              count: +d.value
             }
           });
       console.log(marital_status);
@@ -131,10 +262,10 @@
           .key(function(d) { return d.Q17; })
           .rollup(function(v) { return v.length; })
           .entries(data)
-          .map(function(group) {
+          .map(function(d) {
             return {
-              religion_faith: group.key,
-              count: group.value
+              religion_faith: d.key,
+              count: +d.value
             }
           });
       console.log(religion_faith);
@@ -144,13 +275,35 @@
           .key(function(d) { return d.Q18; })
           .rollup(function(v) { return v.length; })
           .entries(data)
-          .map(function(group) {
+          .map(function(d) {
             return {
-              disability: group.key,
-              count: group.value
+              disability: d.key,
+              count: +d.value
             }
           });
       console.log(disability);
+
+      // bar graph for ageCnt
+      x.domain(ageCnt.map(function(d) { return d.age; }));
+      y.domain([0, d3.max(ageCnt, function(d) { d.count; })]);
+
+      age_svg.selectAll(".bar")
+          .data(ageCnt)
+        .enter().append("rect")
+          .attr("class", "bar")
+          .attr("x", function(d) { return x(d.age); })
+          .attr("width", x.bandwidth())
+          .attr("y", function(d) { return y(d.count); })
+          .attr("height", function(d) { return height - y(d.count); });
+
+      // x Axis
+      age_svg.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x));
+
+      // y Axis
+      age_svg.append("g")
+          .call(d3.axisLeft(y));
   });
 
   </script>
