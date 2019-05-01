@@ -2,39 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Before & After</title>
-  <link rel="stylesheet" href="/comparison.css">
-  <style>
-    .before {
-      width: 800px;
-      align: middle;
-    }
+  <title>Word Clouds Comparison</title>
+  <link rel="stylesheet" href="../public/css/comparison.css">
 
-    .after {
-      width: 800px;
-    }
-  </style>
-  <!-- <script src="/d3.min.js"></script> -->
-  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://d3js.org/d3-selection.v1.js"></script>
-  <!-- <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.min.js"></script> -->
-  <script src="d3.layout.cloud.js"></script>
+  <script src="../public/js/d3.layout.cloud.js"></script>
 </head>
 
 <body>
   <!-- <button type="button" id="refresh-btn">Refresh data</button> -->
   <!-- <div id="cloud"></div> -->
 
-  <h1 align="center">Intersectionality Term Comparison</h1>
+  <h1 class="text" align="center">Intersectionality Term Comparison</h1>
 
-  <h4>The two word clouds show the results of before and after participants
+  <h4 class="text">The two word clouds show the results of before and after participants
     have watched the video on Intersectionality and show how their perception
     of the terminology "Intersectionality" has changed</h4>
 
-  <img class="before" src="before.svg">
-  <img class="after" src="after.svg">
+  <div class="text">
+    <h2>Before</h2>
+    <img class="before" src="../public/img/before.svg">
+
+    <h2>After</h2>
+    <img class="after" src="../public/img/after.svg">
+  </div>
+
 
   <script type="text/javascript">
   var margin = {top: 20, right: 20, bottom: 40, left: 20},
@@ -43,7 +36,7 @@
 
   // parsing data from CSV file
 
-  d3.csv("data_q.csv").then(function(data) {
+  d3.csv("data_q.csv", function(data) {
     // return {
     //   before : d.Q25.toLowerCase(),
     //   after : d.Q33.toLowerCase()
@@ -156,6 +149,8 @@
             });
       };
   });
+
+
 
   </script>
 </body>

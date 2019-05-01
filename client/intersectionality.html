@@ -1,37 +1,31 @@
 <!DOCTYPE>
 <html lang="en">
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <title>Intersectionality</title>
-  <link rel="stylesheet" href="/intersectionality.css">
-  <style>
-    .sankey {
-      width: 2000px;
-    }
-  </style>
-  <script src="/d3.min.js"></script>
-  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Intersectionality at Xaviers</title>
+  <link rel="stylesheet" href="../public/css/intersectionality.css">
+
+  <script src="../public/js/d3.min.js>"></script>
+  <script src="../public/js/sankey.js>"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
-  <!-- <script src="https://d3js.org/d3.v5.min.js"></script> -->
   <script src="https://d3js.org/d3-selection.v1.js"></script>
   <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
   <script src="https://unpkg.com/d3-array@1"></script>
-  <script src="https://unpkg.com/d3-collection@1"></script>
   <script src="https://unpkg.com/d3-path@1"></script>
   <script src="https://unpkg.com/d3-shape@1"></script>
   <script src="https://unpkg.com/d3-sankey@0"></script>
 </head>
 
 <body>
-  <h1 align="center">Intersectionality at Xavier</h1>
+  <h1 class="text" align="center">Intersectionality at Xavier</h1>
 
-  <img class="sankey" src="sankey.svg">
+  <img class="sankey" src="../public/img/sankey.svg">
   <script type="text/javascript">
   var sankey = d3.sankey();
   var ageCnt, sexCnt, genderIdentity, sexual_orientation, immigration_status,
       ethnicity, highest_education, marital_status, religion_faith, disability;
   // parsing data from CSV file
-  d3.csv("data_q.csv").then(function(data) {
+  d3.csv("data_q.csv", function(data) {
     // regrouping for age
     ageCnt = d3.nest()
         .key(function(d) { return d.Q8; })
