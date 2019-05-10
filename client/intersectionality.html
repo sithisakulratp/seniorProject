@@ -1,15 +1,13 @@
 <!DOCTYPE>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" http-equiv="encoding">
   <title>Intersectionality at Xaviers</title>
   <link rel="stylesheet" href="../public/css/intersectionality.css">
 
-  <script src="../public/js/d3.min.js>"></script>
-  <script src="../public/js/sankey.js>"></script>
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="https://d3js.org/d3-selection.v1.js"></script>
-  <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+  <script charset="UTF-8" src="../public/js/sankey.js"></script>
+  <script src="https://d3js.org/d3.v4.js" charset="UTF-8"></script>
+
   <script src="https://unpkg.com/d3-array@1"></script>
   <script src="https://unpkg.com/d3-path@1"></script>
   <script src="https://unpkg.com/d3-shape@1"></script>
@@ -19,13 +17,41 @@
 <body>
   <h1 class="text" align="center">Intersectionality at Xavier</h1>
 
-  <img class="sankey" src="../public/img/sankey.svg">
+  <img class="sankey" src="../public/img/sankey-diagram.svg">
+  <svg width="1800" height="400" id="sankey-diagram"></svg>
   <script type="text/javascript">
-  var sankey = d3.sankey();
-  var ageCnt, sexCnt, genderIdentity, sexual_orientation, immigration_status,
-      ethnicity, highest_education, marital_status, religion_faith, disability;
+
+  var ageCnt, sexCnt, genderIdentity, sexualOrientation, immigrationStatus,
+      ethnicity, highestEducation, maritalStatus, religionFaith, disability;
+
+  var margin = {top: 12, right: 12, bottom: 12, left: 12},
+      width = 1800 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+  var svg = d3.select("#sankey-diagram")
+        .append("svg")
+          .attr("width","100%")
+          .attr("height", "auto");
+
+  svg.append("g")
+      .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+
+  var nodes,
+      links;
+
+  var graph = {"nodes" : [], "links" : []};
+
+  var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+  var sankey = d3.sankey()
+        .size([width, height])
+        .nodeWidth(15)
+        .nodePadding(10);
+
+  // var path = sankey.link();
+
   // parsing data from CSV file
-  d3.csv("data_q.csv", function(data) {
+  d3.csv("client/data_q.csv", function(data) {
     // regrouping for age
     ageCnt = d3.nest()
         .key(function(d) { return d.Q8; })
@@ -59,14 +85,14 @@
         .entries(data)
         .map(function(group) {
           return {
-            gender_identity: group.key,
+            gender: group.key,
             count: group.value
           }
         });
     console.log(genderIdentity);
 
     // regrouping sexual_orientation
-    sexual_orientation = d3.nest()
+    sexualOrientation = d3.nest()
         .key(function(d) { return d.Q11; })
         .rollup(function(v) { return v.length; })
         .entries(data)
@@ -76,10 +102,10 @@
             count: group.value
           }
         });
-    console.log(sexual_orientation);
+    console.log(sexualOrientation);
 
     // regrouping immigration_status
-    immigration_status = d3.nest()
+    immigrationStatus = d3.nest()
         .key(function(d) { return d.Q12; })
         .rollup(function(v) { return v.length; })
         .entries(data)
@@ -89,7 +115,7 @@
             count: group.value
           }
         });
-    console.log(immigration_status);
+    console.log(immigrationStatus);
 
     // regrouping ethnicity
     ethnicity = d3.nest()
@@ -105,7 +131,7 @@
     console.log(ethnicity);
 
     // regrouping highest_education
-    highest_education = d3.nest()
+    highestEducation = d3.nest()
         .key(function(d) { return d.Q14; })
         .rollup(function(v) { return v.length; })
         .entries(data)
@@ -115,10 +141,10 @@
             count: group.value
           }
         });
-    console.log(highest_education);
+    console.log(highestEducation);
 
     // regrouping marital_status
-    marital_status = d3.nest()
+    maritalStatus = d3.nest()
         .key(function(d) { return d.Q15; })
         .rollup(function(v) { return v.length; })
         .entries(data)
@@ -128,10 +154,10 @@
             count: group.value
           }
         });
-    console.log(marital_status);
+    console.log(maritalStatus);
 
     // regrouping religion_faith
-    religion_faith = d3.nest()
+    religionFaith = d3.nest()
         .key(function(d) { return d.Q17; })
         .rollup(function(v) { return v.length; })
         .entries(data)
@@ -141,7 +167,7 @@
             count: group.value
           }
         });
-    console.log(religion_faith);
+    console.log(religionFaith);
 
     // regrouping disability
     disability = d3.nest()
@@ -157,7 +183,106 @@
     console.log(disability);
 
 
-});
+    data.forEach(function(d) {
+      graph.nodes.push({ "name": d.age });
+      graph.links.push({ "source" : d.age,
+                         "target" : d.sex,
+                         "value" : +d.count,});
+      graph.nodes.push({ "name" : d.sex });
+      graph.links.push({ "source" : d.sex,
+                         "target" : d.gender,
+                         "value" : +d.count,});
+      graph.nodes.push({ "name" : d.gender });
+      graph.links.push({ "source" : d.gender,
+                         "target" : d.sexual_orientation,
+                         "value" : +d.count,});
+      graph.nodes.push({ "name" : d.sexual_orientation });
+      graph.links.push({ "source" : d.sexual_orientation,
+                         "target" : d.immigration_status,
+                         "value" : +d.count,});
+      graph.nodes.push({ "name" : d.immigration_status });
+      graph.links.push({ "source" : d.immigration_status,
+                         "target" : d.ethnicity,
+                         "value" : +d.count,});
+      graph.nodes.push({ "name" : d.ethnicity });
+      graph.links.push({ "source" : d.ethnicity,
+                         "target" : d.highest_education,
+                         "value" : +d.count,});
+      graph.nodes.push({ "name" : d.highest_education });
+      graph.links.push({ "source" : d.highest_education,
+                         "target" : d.marital_status,
+                         "value" : +d.count,});
+      graph.nodes.push({ "name" : d.marital_status });
+      graph.links.push({ "source" : d.marital_status,
+                         "target" : d.religion_faith,
+                         "value" : +d.count,});
+      graph.nodes.push({ "name" : d.religion_faith });
+      graph.links.push({ "source" : d.religion_faith,
+                         "target" : d.disability,
+                         "value" : +d.count,});
+      graph.nodes.push({ "name" : d.disability });
+
+    })
+
+    graph.nodes = d3.keys(d3.nest()
+      .key(function(d) { return d.name; })
+      .map(graph.nodes));
+
+    graph.links.forEach(function(d, i) {
+      graph.links[i].source = graph.nodes.indexOf(graph.links[i].source);
+      graph.links[i].target = graph.nodes.indexOf(graph.links[i].target);
+    });
+
+    graph.nodes.forEach(function(d, i) {
+      graph.nodes[i] = { "name" : d };
+    });
+
+    sankey.nodes(graph.nodes);
+    sankey.links(graph.links);
+    sankey.layout(32);
+
+    var link = svg.append("g").selectAll(".link")
+                  .data(graph.links)
+                .enter().append("path")
+                  .attr("class", "link");
+                  // .attr("d", path)
+                  // .style("stroke-width", function(d) {
+                  //   return Math.max(1, d.dy);
+                  // });
+
+    var node = svg.append("g").selectAll(".node")
+          .data(graph.nodes)
+        .enter().append("g")
+          .attr("class", "node")
+          .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+          });
+
+    node.append("rect")
+        .attr("height", function(d) { return d.dy; })
+        .attr("width", sankey.nodeWidth())
+        .style("fill", function(d) {
+          return d.color = color(d.name.replace(/ .*/, ""));
+        })
+        .style("stroke", function(d) {
+          return d3.rgb(d.color).darker(2);
+        });
+
+    node.append("text")
+        .attr("x", -6)
+        .attr("y", function(d) { return d.dy / 2; })
+        .attr("dy", ".35em")
+        .attr("text-anchor", "end")
+        .attr("transform", null)
+        .text(function(d) { return d.name + ": " + d.count; })
+      .filter(function(d) { return d.x < width / 2; })
+        .attr("x", 6 + sankey.nodeWidth())
+        .attr("text-anchor", "start");
+
+    svg.append("svg")
+        .attr("d", d3.sankeyJustify(graph.nodes));
+  });
+
   </script>
 </body>
 </html>
